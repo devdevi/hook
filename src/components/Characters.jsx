@@ -9,6 +9,7 @@ import React, {
 import '../style/character.css'
 import Search from './Search'
 import Character from './Character'
+import useCharacters from '../hooks/useCaracter';
 
 
 const initialState =  {
@@ -33,14 +34,14 @@ const favoriteReducer = (state, action) => {
 
   }
 }
-
+const API = 'http://rickandmortyapi.com/api/character'
 
 const Characters= () => {
 
-    const [ characters, setCharacters ] = useState([]);
     const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
     const [search, setSearch] = useState('')
     const searchInput = useRef(null)
+    const characters = useCharacters(API)
 
 
     // const handleSearch =(event) =>  {
@@ -68,14 +69,6 @@ const Characters= () => {
     const handleClick = favorite => {
       dispatch({type: 'ADD_TO_FAVORITE', payload: favorite})
     }
-
-    useEffect( () => {
-        fetch('https://rickandmortyapi.com/api/character/')
-        .then(res => res.json())
-        .then(data => setCharacters(data.results))
-    }, [])
-
-
 
     return (
         <div className="Characters grid-container">
